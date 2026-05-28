@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 2 állapot: 
+        - vásárló: keresés, és nav bar kevnecek
+        - bolt: termékek kezelése + új feltöltése
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="index.js"></script>
+    <title>Mérleg.hu</title>
+</head>
+<body>
+<header>
+    <h1 id="welcome"></h1>
+    <br>
+    <nav id = "nav">
+        <button id="kijelentkezes">Kijelentkezés</button>
+    </nav>
+<div id="input_ter">
+    
+</div>
+</header>
+<table id="termekek">
+</table>    
+<div id="sz_hely"></div>
+</body>
+<script>
+    Bolt();
+    const kijelentkezesBtn = document.getElementById("kijelentkezes");
+    kijelentkezesBtn.addEventListener("click", () => {
+        sessionStorage.removeItem("user");
+        window.location.href = "index.html";
+    });
+</script>
+</html>
