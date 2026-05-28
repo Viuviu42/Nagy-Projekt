@@ -55,8 +55,8 @@ export const deleteFavorite = (user_id, product_name) => {
     return db.prepare("DELETE FROM favorites WHERE user_id = ? AND product_name = ?").run(user_id, product_name)
 }
 
-export const getFavorites = (user_id) => {
-    return db.prepare("SELECT favorites.id, products.name, products.price, products.raktaron, products.user_name FROM favorites INNER JOIN products ON favorites.product_name = products.name WHERE favorites.user_id = ?").all(user_id)
+export const getFavorites = (user_email) => {
+    return db.prepare("SELECT favorites.id, products.name, products.price, products.raktaron, products.user_name FROM favorites INNER JOIN products ON favorites.product_name = products.name WHERE favorites.user_email = ?").all(user_email)
 }
 
 

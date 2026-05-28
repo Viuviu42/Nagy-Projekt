@@ -6,7 +6,7 @@ app.use(express.json())
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
     res.setHeader("Access-Control-Allow-Headers", "Content-Type")
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
     if (req.method === "OPTIONS") return res.sendStatus(200)
     next()
 })
@@ -87,9 +87,13 @@ app.get("/keres/:product_name", (req, res) => {
 
 ///--------------------------------------------------------------------- kedvenc
 app.get("/kedvenc/:user_name", (req, res) => {
-    const { user_name } = req.params
-    const data = db.getFavorites(user_name)
-    return res.status(200).json(data)
+    try {
+        const { user_name } = req.params
+        const data = db.getFavorites(user_name)
+        return res.status(200).json(data)
+    } catch(e) {
+        return res.status(500).json({error: e.message})
+    }
 })
 
 app.delete("/kedvenc/:id", (req, res) => {
