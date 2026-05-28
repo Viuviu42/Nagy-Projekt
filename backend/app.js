@@ -83,6 +83,10 @@ app.get("/keres/:product_name", (req, res) => {
     return res.status(200).json(data)
 })
 
+app.get("/termekek", (req, res) => {
+    const data = db.getProducts()
+    return res.status(200).json(data)
+})
 
 
 ///--------------------------------------------------------------------- kedvenc

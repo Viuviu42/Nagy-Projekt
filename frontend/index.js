@@ -131,6 +131,17 @@ async function Bolt() {
         kereses.placeholder = "Keresés...";
         const keresesButton = document.createElement("button");
         keresesButton.textContent = "Keresés";
+        try {
+                const response = await fetch(hely + "termekek");
+                const termekek = await response.json();
+                if (termekek.error) {
+                    alert(termekek.error);
+                    return;
+                }
+                tableMaker(termekek, termekekTable, true);
+            } catch (error) {
+                console.error("Error:", error);
+            }
         keresesButton.addEventListener("click", async () => {
             const searchTerm = kereses.value.trim();
             if (!searchTerm) return;

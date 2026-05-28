@@ -44,6 +44,10 @@ export const getProductsByUser = (product_name) => {
     return db.prepare("SELECT * FROM products WHERE name = ? ORDER BY price ASC").all(product_name)
 }
 
+export const getProducts  = () => {
+    return db.prepare("SELECT * FROM products").all()
+}
+
 export const createFavorite = (user_email, product_name) => {
     return db.prepare("INSERT INTO favorites (user_email, product_name) VALUES (?, ?)").run(user_email, product_name)
 }
