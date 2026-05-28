@@ -152,7 +152,7 @@ async function Bolt() {
 
 }
 
-function Kedvencek(){
+function Kedvencek(){  // nem működik
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) {
         window.location.href = "index.html";
@@ -162,7 +162,7 @@ function Kedvencek(){
         window.location.href = "bolt.html";
         return;
     }
-    fetch(hely + "kedvenc/" + user.name)
+    fetch(hely + "kedvenc/" + user.name) //nevet nézd meg, szerintem emial kéne te butus
     .then(response => response.json())
     .then(data => {
         document.getElementById("welcome").textContent = `Üdvözlünk, ${user.name}!`;
@@ -188,7 +188,7 @@ async function getAll(type){
     }
 }
 
-async function deleteItem(type, id){
+async function deleteItem(type, id){ // nem működik
     try {
         const response = await fetch(hely + "delete/" + type + "/" + id, {
             method: "DELETE"
@@ -288,8 +288,8 @@ function tableMaker(DBproducts, termekekTable){
             row.insertCell().appendChild(inputPrice);
             row.insertCell().appendChild(raktáron);
             row.insertCell().appendChild(deleteButton);
-            deleteButton.addEventListener("click", () => {
-                deleteItem("products", row.id);
+            deleteButton.addEventListener("click", async() => {
+                await deleteItem("products", row.id);
                 termekekTable.deleteRow(row.rowIndex);
             });
         });}
