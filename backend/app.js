@@ -72,6 +72,14 @@ app.put("/bolt/:id", (req, res) => {
     db.updateProduct(id, name, price, raktaron)
     return res.status(200).json({message: "Termék frissítve"})
 })
+
+app.get("/bolt/:user_name", (req, res) => {
+    const { user_name } = req.params
+    const data = db.getProductByUser(user_name)
+    if(!data){
+        return res.status(404).json({error: "Nincs ilyen termék"})
+    }
+    return res.status(200).json(data)})
 /// -------------------------------------------------------------------- felhasználó
 
 app.get("/keres/:product_name", (req, res) => {
@@ -100,6 +108,20 @@ app.delete("/kedvenc/:id", (req, res) => {
     const { id } = req.params
     db.deleteItem("favorites", id)
     return res.status(200).json({message: "Kedvenc törölve"})
+})
+
+app.post("/kedvenc", (req, res) => {
+    try{
+        const { user_email, product_name } = req.body
+        if(!user_email || !product_name){
+            return res.status(400).json({error: "Hiányzó adat"})
+        }
+        db.createFavorite(user_email, product_name)
+        return res.status(201).json({message: "Kedvenc hozzáadva"})
+    }
+    catch(e){
+        return res.status(500).json({error: e.message})
+    }
 })
 
 ///-------------------------------------------------------------------------------------------

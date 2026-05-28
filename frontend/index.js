@@ -72,8 +72,10 @@ async function Bolt() {
         const priceInput = document.createElement("input");
         priceInput.placeholder = "Termék ára";
         priceInput.type = "number";
+        priceInput.min = "0";
         const raktaronInput = document.createElement("input");
         raktaronInput.type = "checkbox";
+        raktaronInput.checked = true;
         const raktaronLabel = document.createElement("label");
         raktaronLabel.textContent = "Raktáron";
         raktaronLabel.appendChild(raktaronInput);
@@ -91,13 +93,13 @@ async function Bolt() {
             console.log(ize)
             nameInput.value = "";
             priceInput.value = "";
-            ///location.reload();
-        });
+            raktaronInput.checked = true;
+            });
         inputTer.appendChild(nameInput);
         inputTer.appendChild(priceInput);
         inputTer.appendChild(raktaronLabel);
         inputTer.appendChild(saveButton);
-        const DBproducts = await getAll("products");
+        const DBproducts = await getProductsByUser(user.name);
         if (!DBproducts) {
             alert("Hiba történt az adatok lekérésekor.");
             return;
@@ -119,8 +121,10 @@ async function Bolt() {
 
     }
     else{
-        const kedvencekLink = document.createElement("a");
-        kedvencekLink.href = "kedvencek.html";
+        const kedvencekLink = document.createElement("button");
+        kedvencekLink.onclick = () => {
+            window.location.href = "kedvencek.html";
+        };
         kedvencekLink.textContent = "Kedvenceim";
         document.getElementById("nav").appendChild(kedvencekLink);
         const kereses = document.createElement("input");
@@ -132,7 +136,7 @@ async function Bolt() {
             if (!searchTerm) return;
             termekekTable.innerHTML = "";
             try {
-                const response = await fetch(hely + "keres/" + encodeURIComponent(searchTerm));
+                const response = await fetch(hely + "keres/" + searchTerm);
                 const termekek = await response.json();
                 if (termekek.error) {
                     alert(termekek.error);
@@ -149,6 +153,7 @@ async function Bolt() {
 
 }
 
+
 function Kedvencek(){  // nem működik
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) {
@@ -159,7 +164,7 @@ function Kedvencek(){  // nem működik
         window.location.href = "bolt.html";
         return;
     }
-    fetch(hely + "kedvenc/" + encodeURIComponent(user.email))
+    fetch(hely + "kedvenc/" + user.email)
     .then(response => {
         if (!response.ok) {
             return response.text().then(text => { throw new Error(`Szerver hiba (${response.status}): ${text}`) })
@@ -259,7 +264,7 @@ async function createFavorite(user_email, product_name){
             body: JSON.stringify({ user_email, product_name })
         });
         const data = await response.json();
-        if (data.error) alert(data.error);
+        if (data.error) console.log(data.error);
         return data.message;
     } catch (error) {
         console.error("Error:", error);
@@ -290,6 +295,19 @@ function kedvencekTableMaker(favorites, table){
     });
 }
 
+async function getProductsByUser(user_name){
+    try {
+        const response = await fetch(hely + "bolt/" + user_name);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error:", error);
+        console.error("Hiba történt az adatok lekérésekor.");
+        return null;
+    }
+
+}
+
 function tableMaker(DBproducts, termekekTable, readOnly = false){
     const header = termekekTable.insertRow();
         header.insertCell().textContent = "Név";
@@ -305,7 +323,8 @@ function tableMaker(DBproducts, termekekTable, readOnly = false){
                 const favButton = document.createElement("button");
                 favButton.textContent = "Kedvenc";
                 favButton.addEventListener("click", async () => {
-                    await createFavorite(sessionStorage.getItem("user").email, product.name);
+                    const user = JSON.parse(sessionStorage.getItem("user"));
+                    await createFavorite(user.email, product.name);
                     favButton.disabled = true;
                     favButton.textContent = "Hozzáadva";
                 });
@@ -315,6 +334,7 @@ function tableMaker(DBproducts, termekekTable, readOnly = false){
                 inputName.value = product.name;
                 const inputPrice = document.createElement("input");
                 inputPrice.value = product.price;
+                inputPrice.type = "number";
                 const raktáron = document.createElement("input");
                 raktáron.type = "checkbox";
                 raktáron.checked = product.raktaron;

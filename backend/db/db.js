@@ -41,18 +41,22 @@ export const updateProduct = (id, name, price, raktaron) => {
     return db.prepare("UPDATE products SET name = ?, price = ?, raktaron = ? WHERE id = ?").run(name, price, raktaron, id)
 }
 
+export const getProductByUser = (user_name) => {
+    return db.prepare("SELECT * FROM products WHERE user_name = ?").all(user_name)
+}
+
 /// -------------------------------------------------------------------- (főként) felhasználó
 
 export const getProductsByUser = (product_name) => {
     return db.prepare("SELECT * FROM products WHERE name = ? ORDER BY price ASC").all(product_name)
 }
 
-export const createFavorite = (user_id, product_name) => {
-    return db.prepare("INSERT INTO favorites (user_id, product_name) VALUES (?, ?)").run(user_id, product_name)
+export const createFavorite = (user_email, product_name) => {
+    return db.prepare("INSERT INTO favorites (user_email, product_name) VALUES (?, ?)").run(user_email, product_name)
 }
 
-export const deleteFavorite = (user_id, product_name) => {
-    return db.prepare("DELETE FROM favorites WHERE user_id = ? AND product_name = ?").run(user_id, product_name)
+export const deleteFavorite = (user_email, product_name) => {
+    return db.prepare("DELETE FROM favorites WHERE user_email = ? AND product_name = ?").run(user_email, product_name)
 }
 
 export const getFavorites = (user_email) => {
