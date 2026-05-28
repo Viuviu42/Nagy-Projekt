@@ -4,19 +4,12 @@ import Database from "better-sqlite3"
 const db = new Database("./db/database.sqlite")
 db.prepare("CREATE TABLE IF NOT EXISTS user(bolt BOOLEAN, name TEXT, email TEXT, pwd TEXT); ").run()
 db.prepare("CREATE TABLE IF NOT EXISTS products(id INTEGER PRIMARY KEY AUTOINCREMENT,user_name TEXT, name TEXT, price INTEGER, raktaron BOOLEAN)").run()
-db.prepare("CREATE TABLE IF NOT EXISTS favorites(id INTEGER PRIMARY KEY AUTOINCREMENT,user_id TEXT, product_name TEXT)").run()
+db.prepare("CREATE TABLE IF NOT EXISTS favorites(id INTEGER PRIMARY KEY AUTOINCREMENT,user_email TEXT, product_name TEXT)").run()
 
 /// -------------------------------------------------------------------- még jó lehet később
-export const getAll = (type) => {
-    return db.prepare(`SELECT * FROM ${type}`).all()
-}
 
 export const deleteItem = (type, id) => {
     return db.prepare(`DELETE FROM ${type} WHERE id = ?`).run(id)
-}
-
-export const getId = (type, id) => {
-    return db.prepare(`SELECT * FROM ${type} WHERE id = ?`).get(id)
 }
 
 /// -------------------------------------------------------------------- (főként) regisztráció
@@ -55,9 +48,6 @@ export const createFavorite = (user_email, product_name) => {
     return db.prepare("INSERT INTO favorites (user_email, product_name) VALUES (?, ?)").run(user_email, product_name)
 }
 
-export const deleteFavorite = (user_email, product_name) => {
-    return db.prepare("DELETE FROM favorites WHERE user_email = ? AND product_name = ?").run(user_email, product_name)
-}
 
 export const getFavorites = (user_email) => {
     return db.prepare("SELECT favorites.id, products.name, products.price, products.raktaron, products.user_name FROM favorites INNER JOIN products ON favorites.product_name = products.name WHERE favorites.user_email = ?").all(user_email)

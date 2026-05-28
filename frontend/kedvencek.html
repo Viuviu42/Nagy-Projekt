@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <script src="index.js"></script>
-    <title>Kedvencek</title>
+    <title>Kedvencek – Mérleg.hu</title>
 </head>
 <body>
-    <!-- kedvencek teljes kilistázása (táblázat) és törlési lehetőség [ha nagyon van időd akkor nincs raktáron kiszürkítve a sor]-->
     <header>
-        <h1 id="welcome"></h1>
-        <nav>
-            <button id="kijelentkezes">Kijelentkezés</button>
-        <button id="bolt" onclick="window.location.href='bolt.html'">Bolt</button>
-        </nav>
+        <div class="header-top">
+            <h1 id="welcome"></h1>
+            <nav>
+                <button id="kijelentkezes">Kijelentkezés</button>
+                <button id="bolt" onclick="window.location.href='bolt.html'">Bolt</button>
+            </nav>
+        </div>
     </header>
     <h1>Kedvencek</h1>
     <table id="kedvencek">

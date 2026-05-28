@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <script src="index.js"></script>
-    <title>Bejelentkezés</title>
+    <title>Bejelentkezés – Mérleg.hu</title>
 </head>
-<body>
+<body class="auth-page">
+    <div class="brand">Mérleg<span>.hu</span></div>
     <div class="container">
         <h1>Bejelentkezés</h1>
         <form onsubmit="bejelentkezes(event); return false;">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="password">Jelszó:</label>
-            <input type="password" id="password" name="password" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="pelda@email.hu" required>
+            <label for="password">Jelszó</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
             <button type="submit">Bejelentkezés</button>
         </form>
-        <p>Nincs fiókod? <a href="regisztracio.html">Regisztráljon ma</a></p>
+        <p>Nincs fiókod? <a href="regisztracio.html">Regisztrálj most</a></p>
     </div>
 </body>
 </html>

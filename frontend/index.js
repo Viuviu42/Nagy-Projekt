@@ -154,7 +154,7 @@ async function Bolt() {
 }
 
 
-function Kedvencek(){  // nem működik
+function Kedvencek(){ 
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) {
         window.location.href = "index.html";
@@ -164,7 +164,7 @@ function Kedvencek(){  // nem működik
         window.location.href = "bolt.html";
         return;
     }
-    fetch(hely + "kedvenc/" + user.email)
+    fetch(hely + "kedvenc/" + encodeURIComponent(user.email))
     .then(response => {
         if (!response.ok) {
             return response.text().then(text => { throw new Error(`Szerver hiba (${response.status}): ${text}`) })
@@ -188,19 +188,7 @@ function Kedvencek(){  // nem működik
 
 }
 
-async function getAll(type){
-    try {
-        const response = await fetch(hely + "getAll/" + type);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Error:", error);
-        alert("Hiba történt az adatok lekérésekor.");
-        return null;
-    }
-}
-
-async function deleteItem(type, id){ // nem működik
+async function deleteItem(type, id){ 
     try {
         const response = await fetch(hely + "delete/" + type + "/" + id, {
             method: "DELETE"
@@ -228,7 +216,7 @@ async function createProduct(user_name, name, price, raktaron){
     }
 }
 
-async function updateProduct(id, name, price, raktaron){ // nem működik
+async function updateProduct(id, name, price, raktaron){ 
     try {
         const response = await fetch(hely + "bolt/" + id, {
             method: "PUT",
@@ -287,6 +275,7 @@ function kedvencekTableMaker(favorites, table){
         row.insertCell().textContent = item.user_name;
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Törlés";
+        deleteButton.classList.add("danger");
         deleteButton.addEventListener("click", async () => {
             await deleteKedvenc(item.id);
             table.deleteRow(row.rowIndex);
@@ -340,6 +329,7 @@ function tableMaker(DBproducts, termekekTable, readOnly = false){
                 raktáron.checked = product.raktaron;
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "Törlés";
+                deleteButton.classList.add("danger");
                 row.insertCell().appendChild(inputName);
                 row.insertCell().appendChild(inputPrice);
                 row.insertCell().appendChild(raktáron);

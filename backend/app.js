@@ -14,11 +14,6 @@ app.use((req, res, next) => {
 const PORT = 3080
 
 ///-------------------------------------------------------------------- általános
-app.get("/getAll/:type", (req, res) => {
-    const { type } = req.params
-    const data = db.getAll(type)
-    return res.status(200).json(data)
-})
 
 app.delete("/delete/:type/:id", (req, res) => {
     const { type, id } = req.params
@@ -76,9 +71,6 @@ app.put("/bolt/:id", (req, res) => {
 app.get("/bolt/:user_name", (req, res) => {
     const { user_name } = req.params
     const data = db.getProductByUser(user_name)
-    if(!data){
-        return res.status(404).json({error: "Nincs ilyen termék"})
-    }
     return res.status(200).json(data)})
 /// -------------------------------------------------------------------- felhasználó
 
